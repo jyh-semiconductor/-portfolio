@@ -99,6 +99,30 @@ function genId() {
   return Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
 }
 
+// ===== 데이터 내보내기 =====
+document.getElementById('export-btn').addEventListener('click', () => {
+  const study    = loadData('portfolio_study');
+  const projects = loadData('portfolio_projects');
+  const skills   = loadData('portfolio_skills');
+
+  const content = `// ===== 정적 데이터 파일 =====
+// 어드민 페이지에서 "데이터 내보내기" 버튼을 눌러 이 파일을 갱신하세요.
+// 갱신 후 GitHub에 업로드하면 사이트에 반영됩니다.
+// 생성일시: ${new Date().toLocaleString('ko-KR')}
+
+const STATIC_DATA = ${JSON.stringify({ portfolio_study: study, portfolio_projects: projects, portfolio_skills: skills }, null, 2)};
+`;
+
+  const blob = new Blob([content], { type: 'text/javascript' });
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  a.href     = url;
+  a.download = 'data.js';
+  a.click();
+  URL.revokeObjectURL(url);
+  showToast('data.js 다운로드 완료! 웹페이지 폴더에 덮어쓰세요.');
+});
+
 // ===========================
 // STUDY LOG
 // ===========================

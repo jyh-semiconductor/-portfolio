@@ -1,5 +1,9 @@
-// ===== localStorage 헬퍼 =====
+// ===== 데이터 로드 (data.js 우선, 없으면 localStorage) =====
 function loadData(key) {
+  // data.js에 데이터가 있으면 우선 사용 (GitHub Pages 배포용)
+  if (typeof STATIC_DATA !== 'undefined' && STATIC_DATA[key] && STATIC_DATA[key].length > 0) {
+    return STATIC_DATA[key];
+  }
   try { return JSON.parse(localStorage.getItem(key)) || []; }
   catch { return []; }
 }

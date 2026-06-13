@@ -61,6 +61,33 @@
   padding: 80px 24px 80px;
 }
 
+/* ===== 내보내기 바 ===== */
+.export-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  background: rgba(52,211,153,0.06);
+  border: 1px solid rgba(52,211,153,0.2);
+  border-radius: var(--radius-sm);
+  padding: 14px 20px;
+  margin-bottom: 32px;
+  flex-wrap: wrap;
+}
+.export-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.export-info strong {
+  font-size: 0.9rem;
+  color: var(--accent3);
+}
+.export-info span {
+  font-size: 0.78rem;
+  color: var(--text3);
+}
+
 /* ===== Tabs ===== */
 .admin-tabs {
   display: flex;
