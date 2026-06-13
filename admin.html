@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin | 전용현 포트폴리오</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="admin.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- 비밀번호 잠금 화면 -->
+  <div id="lock-screen">
+    <div class="lock-box">
+      <div class="lock-icon">🔒</div>
+      <h1 class="lock-title">Admin<span class="accent">.</span></h1>
+      <p class="lock-sub">관리자 비밀번호를 입력하세요</p>
+      <div class="lock-form">
+        <input type="password" id="pw-input" placeholder="비밀번호" autocomplete="off" />
+        <button id="pw-btn" class="btn btn-primary">입력</button>
+      </div>
+      <p class="lock-error" id="lock-error"></p>
+      <a href="index.html" class="back-link" style="margin-top:20px; display:block; text-align:center;">← 메인으로 돌아가기</a>
+    </div>
+  </div>
+
+  <!-- 어드민 본문 -->
+  <div id="admin-body" style="display:none;">
+    <nav id="navbar" class="scrolled">
+      <div class="nav-inner">
+        <a href="index.html" class="nav-logo">YH<span class="accent">.</span></a>
+        <div class="admin-nav-right">
+          <span class="admin-badge">관리자 모드</span>
+          <a href="index.html" class="btn btn-outline btn-sm">사이트 보기</a>
+          <button id="logout-btn" class="btn btn-sm" style="background:var(--surface); color:var(--text2); border:1px solid var(--border);">로그아웃</button>
+        </div>
+      </div>
+    </nav>
+
+    <main class="admin-main">
+      <!-- 탭 -->
+      <div class="admin-tabs">
+        <button class="tab-btn active" data-tab="study">Study Log</button>
+        <button class="tab-btn" data-tab="portfolio">Portfolio</button>
+        <button class="tab-btn" data-tab="skills">Skills</button>
+      </div>
+
+      <!-- ===== Study Log 탭 ===== -->
+      <div class="tab-panel active" id="tab-study">
+        <div class="panel-header">
+          <h2>Study Log 관리</h2>
+          <button class="btn btn-primary btn-sm" id="study-add-btn">+ 새 항목 추가</button>
+        </div>
+
+        <!-- 추가/수정 폼 -->
+        <div class="admin-form" id="study-form" style="display:none;">
+          <h3 id="study-form-title">새 Study 항목</h3>
+          <div class="form-grid">
+            <div class="form-group">
+              <label>대분류</label>
+              <select id="s-major">
+                <option value="semiconductor">집적회로</option>
+                <option value="data">데이터 분석</option>
+                <option value="quality">품질 및 통계</option>
+                <option value="career">커리어</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>중분류</label>
+              <select id="s-category"></select>
+            </div>
+            <div class="form-group">
+              <label>날짜 (예: 2025.06)</label>
+              <input type="text" id="s-date" placeholder="2025.06" />
+            </div>
+            <div class="form-group full">
+              <label>제목</label>
+              <input type="text" id="s-title" placeholder="학습 주제 제목" />
+            </div>
+            <div class="form-group full">
+              <label>내용 요약 (카드에 표시)</label>
+              <textarea id="s-desc" placeholder="학습 내용을 간략히 정리하세요" rows="2"></textarea>
+            </div>
+            <div class="form-group full">
+              <label>상세 내용 (자세히 보기 페이지에 표시)</label>
+              <textarea id="s-content" placeholder="공부한 내용을 자세히 작성하세요. 줄바꿈으로 문단을 구분합니다." rows="8"></textarea>
+              <p class="form-hint">
+                <strong>제목1:</strong> # 텍스트 &nbsp;|&nbsp;
+                <strong>제목2:</strong> ## 텍스트 &nbsp;|&nbsp;
+                <strong>제목3:</strong> ### 텍스트<br/>
+                <strong>링크:</strong> [텍스트](https://...) &nbsp;|&nbsp;
+                <strong>굵게:</strong> **텍스트** &nbsp;|&nbsp;
+                <strong>코드:</strong> `코드` &nbsp;|&nbsp;
+                <strong>인라인 수식:</strong> $E=mc^2$ &nbsp;|&nbsp;
+                <strong>블록 수식:</strong> $$\frac{d}{dx}f(x)$$
+              </p>
+            </div>
+          </div>
+          <div class="form-actions">
+            <button class="btn btn-primary btn-sm" id="study-save-btn">저장</button>
+            <button class="btn btn-outline btn-sm" id="study-cancel-btn">취소</button>
+          </div>
+        </div>
+
+        <!-- 카테고리 필터 탭 -->
+        <div class="study-admin-tabs" id="study-admin-tabs">
+          <button class="study-tab-btn active" data-major="all">전체</button>
+          <button class="study-tab-btn" data-major="semiconductor">집적회로</button>
+          <button class="study-tab-btn" data-major="data">데이터 분석</button>
+          <button class="study-tab-btn" data-major="quality">품질 및 통계</button>
+          <button class="study-tab-btn" data-major="career">커리어</button>
+        </div>
+
+        <!-- 목록 -->
+        <div class="item-list" id="study-list"></div>
+      </div>
+
+      <!-- ===== Portfolio 탭 ===== -->
+      <div class="tab-panel" id="tab-portfolio">
+        <div class="panel-header">
+          <h2>Portfolio 관리</h2>
+          <button class="btn btn-primary btn-sm" id="portfolio-add-btn">+ 새 프로젝트 추가</button>
+        </div>
+
+        <!-- 추가/수정 폼 -->
+        <div class="admin-form" id="portfolio-form" style="display:none;">
+          <h3 id="portfolio-form-title">새 프로젝트</h3>
+          <div class="form-grid">
+            <div class="form-group full">
+              <label>프로젝트 제목</label>
+              <input type="text" id="p-title" placeholder="프로젝트 제목" />
+            </div>
+            <div class="form-group full">
+              <label>한 줄 설명</label>
+              <input type="text" id="p-desc" placeholder="간단한 프로젝트 설명" />
+            </div>
+            <div class="form-group full">
+              <label>태그 (쉼표로 구분, 예: 공정 시뮬레이션, MATLAB)</label>
+              <input type="text" id="p-tags" placeholder="공정 시뮬레이션, MATLAB" />
+            </div>
+<div class="form-group full">
+              <label>개요</label>
+              <textarea id="p-overview" placeholder="프로젝트 개요를 작성하세요" rows="3"></textarea>
+              <p class="form-hint">
+                <strong>링크:</strong> [텍스트](https://...) &nbsp;|&nbsp;
+                <strong>굵게:</strong> **텍스트** &nbsp;|&nbsp;
+                <strong>코드:</strong> `코드` &nbsp;|&nbsp;
+                <strong>인라인 수식:</strong> $E=mc^2$ &nbsp;|&nbsp;
+                <strong>블록 수식:</strong> $$\frac{d}{dx}f(x)$$
+              </p>
+            </div>
+            <div class="form-group full">
+              <label>기간 (예: 2025.03 – 2025.05)</label>
+              <input type="text" id="p-period" placeholder="2025.03 – 2025.05" />
+            </div>
+            <div class="form-group">
+              <label>분야</label>
+              <input type="text" id="p-field" placeholder="반도체 공정" />
+            </div>
+            <div class="form-group">
+              <label>사용 도구</label>
+              <input type="text" id="p-tools" placeholder="MATLAB" />
+            </div>
+            <div class="form-group full">
+              <label>대표 이미지</label>
+              <div class="img-upload-area" id="img-upload-area">
+                <input type="file" id="p-image" accept="image/*" style="display:none;" />
+                <div class="img-preview" id="img-preview">
+                  <span class="img-placeholder">클릭하거나 이미지를 드래그하세요<br/><small>JPG, PNG, GIF · 권장 2MB 이하</small></span>
+                </div>
+                <div class="img-upload-btns">
+                  <button type="button" class="btn btn-outline btn-sm" id="img-select-btn">이미지 선택</button>
+                  <button type="button" class="btn btn-sm img-remove-btn" id="img-remove-btn" style="display:none;">이미지 제거</button>
+                </div>
+              </div>
+            </div>
+            <div class="form-group full">
+              <label>유튜브 동영상 링크 (선택)</label>
+              <input type="text" id="p-youtube" placeholder="https://www.youtube.com/watch?v=..." />
+              <p class="form-hint" style="margin-top:6px;">유튜브 영상 URL을 붙여넣으면 상세 페이지에 자동으로 재생됩니다.</p>
+            </div>
+          </div>
+          <div class="form-actions">
+            <button class="btn btn-primary btn-sm" id="portfolio-save-btn">저장</button>
+            <button class="btn btn-outline btn-sm" id="portfolio-cancel-btn">취소</button>
+          </div>
+        </div>
+
+        <!-- 목록 -->
+        <div class="item-list" id="portfolio-list"></div>
+      </div>
+
+      <!-- ===== Skills 탭 ===== -->
+      <div class="tab-panel" id="tab-skills">
+        <div class="panel-header">
+          <h2>Skills &amp; Tools 관리</h2>
+          <button class="btn btn-primary btn-sm" id="skill-add-btn">+ 새 카테고리 추가</button>
+        </div>
+
+        <!-- 추가/수정 폼 -->
+        <div class="admin-form" id="skill-form" style="display:none;">
+          <h3 id="skill-form-title">새 카테고리</h3>
+          <div class="form-grid">
+            <div class="form-group full">
+              <label>카테고리 이름 (예: 반도체 공정)</label>
+              <input type="text" id="sk-category" placeholder="반도체 공정" />
+            </div>
+            <div class="form-group full">
+              <label>스킬 목록 (쉼표로 구분)</label>
+              <input type="text" id="sk-items" placeholder="포토리소그래피, CVD / PVD, 식각 (Etching)" />
+            </div>
+          </div>
+          <p class="form-hint">비활성화 항목은 스킬 앞에 <code>-</code>를 붙이세요 (예: <code>-MATLAB</code>)<br/>자격증 항목은 스킬 앞에 <code>*</code>를 붙이세요 (예: <code>*6시그마 GB</code>)<br/>학습 중 자격증은 <code>**</code>를 붙이세요 (예: <code>**SPC</code>)</p>
+          <div class="form-actions">
+            <button class="btn btn-primary btn-sm" id="skill-save-btn">저장</button>
+            <button class="btn btn-outline btn-sm" id="skill-cancel-btn">취소</button>
+          </div>
+        </div>
+
+        <!-- 목록 -->
+        <div class="item-list" id="skill-list"></div>
+      </div>
+    </main>
+  </div>
+
+  <script src="admin.js"></script>
+</body>
+</html>

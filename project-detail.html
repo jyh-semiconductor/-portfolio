@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>프로젝트 | 전용현</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="project.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+  <!-- MathJax -->
+  <script>
+    window.MathJax = {
+      tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] },
+      options: { skipHtmlTags: ['script','noscript','style','textarea'] }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" async></script>
+</head>
+<body>
+  <nav id="navbar" class="scrolled">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">YH<span class="accent">.</span></a>
+      <ul class="nav-links">
+        <li><a href="index.html#about">About</a></li>
+        <li><a href="index.html#skills">Skills</a></li>
+        <li><a href="index.html#study">Study Log</a></li>
+        <li><a href="index.html#portfolio">Portfolio</a></li>
+        <li><a href="index.html#contact">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main class="project-main">
+    <div class="back-bar">
+      <a href="index.html#portfolio" class="back-link">← Portfolio로 돌아가기</a>
+    </div>
+
+    <!-- 데이터 로딩 전 -->
+    <div id="detail-loading" style="text-align:center; padding:80px 0; color:var(--text3);">
+      불러오는 중...
+    </div>
+
+    <!-- 프로젝트 없을 때 -->
+    <div id="detail-notfound" style="display:none; text-align:center; padding:80px 0;">
+      <p style="color:var(--text3); font-size:1rem; margin-bottom:24px;">프로젝트를 찾을 수 없습니다.</p>
+      <a href="index.html#portfolio" class="btn btn-outline">Portfolio로 돌아가기</a>
+    </div>
+
+    <!-- 프로젝트 상세 내용 -->
+    <div id="detail-content" style="display:none;">
+      <header class="project-header">
+        <div class="project-tags" id="detail-tags"></div>
+        <h1 class="project-title" id="detail-title"></h1>
+        <p class="project-subtitle" id="detail-desc"></p>
+        <div class="project-meta" id="detail-meta"></div>
+      </header>
+
+      <div class="project-cover placeholder-img" id="detail-cover">
+        <span>프로젝트 이미지</span>
+      </div>
+
+      <div class="project-body" id="project-body-inner">
+        <section class="proj-section" id="detail-overview-section">
+          <h2>개요</h2>
+          <p id="detail-overview"></p>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <p>© 2026 전용현. Built with HTML · CSS · JS</p>
+  </footer>
+
+  <script>
+    function parseContent(text) {
+      if (!text) return '';
+      const blockMath = [];
+      text = text.replace(/\$\$([\s\S]+?)\$\$/g, (_, expr) => { blockMath.push(expr); return `%%BLOCKMATH${blockMath.length-1}%%`; });
+      const inlineMath = [];
+      text = text.replace(/\$([^\$\n]+?)\$/g, (_, expr) => { inlineMath.push(expr); return `%%INLINEMATH${inlineMath.length-1}%%`; });
+      const lines = text.split('\n');
+      const blocks = []; let para = [];
+      const flushPara = () => { if (para.length) { blocks.push(`<p>${para.join('<br/>')}</p>`); para = []; } };
+      const inlineFormat = s => {
+        s = s.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+        s = s.replace(/`([^`]+)`/g, '<code class="inline-code">$1</code>');
+        s = s.replace(/\[([^\]]+)\]\((https?:\/\/[^\)]+)\)/g, '<a href="$2" target="_blank" rel="noopener" class="content-link">$1</a>');
+        return s;
+      };
+      for (const raw of lines) {
+        const line = raw.trimEnd();
+        if (line === '') { flushPara(); continue; }
+        if (/^%%BLOCKMATH\d+%%$/.test(line.trim())) { flushPara(); blocks.push(line.trim()); continue; }
+        const h3m = line.match(/^### (.+)/);
+        const h2m = line.match(/^## (.+)/);
+        const h1m = line.match(/^# (.+)/);
+        if (h3m) { flushPara(); blocks.push(`<h3 class="content-h3">${inlineFormat(h3m[1].replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'))}</h3>`); continue; }
+        if (h2m) { flushPara(); blocks.push(`<h2 class="content-h2">${inlineFormat(h2m[1].replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'))}</h2>`); continue; }
+        if (h1m) { flushPara(); blocks.push(`<h1 class="content-h1">${inlineFormat(h1m[1].replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'))}</h1>`); continue; }
+        let parsed = line.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+        parsed = inlineFormat(parsed);
+        para.push(parsed);
+      }
+      flushPara();
+      let html = blocks.join('\n');
+      html = html.replace(/%%BLOCKMATH(\d+)%%/g, (_, i) => `<div class="math-block">\\[${blockMath[i]}\\]</div>`);
+      html = html.replace(/%%INLINEMATH(\d+)%%/g, (_, i) => `\\(${inlineMath[i]}\\)`);
+      return html;
+    }
+  </script>
+  <script>
+    function loadData(key) {
+      try { return JSON.parse(localStorage.getItem(key)) || []; }
+      catch { return []; }
+    }
+
+    function extractYoutubeId(url) {
+      const patterns = [
+        /[?&]v=([^&#]+)/,
+        /youtu\.be\/([^?&#]+)/,
+        /youtube\.com\/embed\/([^?&#]+)/,
+        /youtube\.com\/shorts\/([^?&#]+)/,
+      ];
+      for (const p of patterns) {
+        const m = url.match(p);
+        if (m) return m[1];
+      }
+      return null;
+    }
+
+    function escHtml(str) {
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    const params = new URLSearchParams(location.search);
+    const id     = params.get('id');
+
+    const loading    = document.getElementById('detail-loading');
+    const notfound   = document.getElementById('detail-notfound');
+    const content    = document.getElementById('detail-content');
+
+    if (!id) {
+      loading.style.display  = 'none';
+      notfound.style.display = 'block';
+    } else {
+      const projects = loadData('portfolio_projects');
+      const item     = projects.find(p => p.id === id);
+
+      loading.style.display = 'none';
+
+      if (!item) {
+        notfound.style.display = 'block';
+      } else {
+        // 페이지 타이틀
+        document.title = item.title + ' | 전용현';
+
+        // 태그
+        const tags = (item.tags || '').split(',').map(t => t.trim()).filter(Boolean);
+        document.getElementById('detail-tags').innerHTML =
+          tags.map(t => `<span class="skill-tag">${escHtml(t)}</span>`).join('');
+
+        // 제목 / 한 줄 설명
+        document.getElementById('detail-title').textContent = item.title;
+        document.getElementById('detail-desc').textContent  = item.desc || '';
+
+        // 메타 정보
+        const metaItems = [
+          item.period && `<span class="meta-item"><span class="meta-label">기간</span> ${escHtml(item.period)}</span>`,
+          item.field  && `<span class="meta-item"><span class="meta-label">분야</span> ${escHtml(item.field)}</span>`,
+          item.tools  && `<span class="meta-item"><span class="meta-label">도구</span> ${escHtml(item.tools)}</span>`,
+        ].filter(Boolean);
+        document.getElementById('detail-meta').innerHTML = metaItems.join('');
+
+        // 유튜브 임베드
+        if (item.youtube) {
+          const videoId = extractYoutubeId(item.youtube);
+          if (videoId) {
+            const videoSection = document.createElement('section');
+            videoSection.className = 'proj-section';
+            videoSection.innerHTML = `
+              <h2>영상</h2>
+              <div class="youtube-wrap">
+                <iframe src="https://www.youtube.com/embed/${videoId}"
+                  title="YouTube video" frameborder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowfullscreen></iframe>
+              </div>`;
+            document.getElementById('project-body-inner').prepend(videoSection);
+          }
+        }
+
+        // 이미지
+        const cover = document.getElementById('detail-cover');
+        if (item.image) {
+          cover.innerHTML = `<img src="${item.image}" alt="${escHtml(item.title)}" style="width:100%;height:100%;object-fit:cover;border-radius:var(--radius);" />`;
+          cover.classList.remove('placeholder-img');
+        }
+
+        // 개요 — 마크다운 파싱 적용
+        const overviewSection = document.getElementById('detail-overview-section');
+        if (item.overview) {
+          document.getElementById('detail-overview').innerHTML = parseContent(item.overview);
+          if (window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise();
+          else window.addEventListener('load', () => { if (window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise(); });
+        } else {
+          overviewSection.style.display = 'none';
+        }
+
+        content.style.display = 'block';
+      }
+    }
+  </script>
+</body>
+</html>

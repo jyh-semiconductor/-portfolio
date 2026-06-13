@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EUV 노광 기술 동향 조사 | 전용현</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="project.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <nav id="navbar" class="scrolled">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">YH<span class="accent">.</span></a>
+      <ul class="nav-links">
+        <li><a href="index.html#about">About</a></li>
+        <li><a href="index.html#skills">Skills</a></li>
+        <li><a href="index.html#study">Study Log</a></li>
+        <li><a href="index.html#portfolio">Portfolio</a></li>
+        <li><a href="index.html#contact">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main class="project-main">
+    <div class="back-bar">
+      <a href="index.html#portfolio" class="back-link">← Portfolio로 돌아가기</a>
+    </div>
+
+    <header class="project-header">
+      <div class="project-tags">
+        <span class="skill-tag">문헌 조사</span>
+        <span class="skill-tag">보고서</span>
+      </div>
+      <h1 class="project-title">EUV 노광 기술 동향 조사</h1>
+      <p class="project-subtitle">EUV 광원·마스크·레지스트 기술 현황과 차세대 패터닝 기술 비교 분석</p>
+      <div class="project-meta">
+        <span class="meta-item"><span class="meta-label">기간</span> 2025.05 – 2025.06</span>
+        <span class="meta-item"><span class="meta-label">분야</span> 반도체 공정 / 노광 기술</span>
+        <span class="meta-item"><span class="meta-label">도구</span> 문헌 조사 · 보고서 작성</span>
+      </div>
+    </header>
+
+    <div class="project-cover placeholder-img">
+      <span>EUV 노광 공정 개념도 이미지</span>
+    </div>
+
+    <div class="project-body">
+      <section class="proj-section">
+        <h2>개요</h2>
+        <p>반도체 미세화의 핵심인 EUV(Extreme Ultraviolet, 13.5 nm) 노광 기술의 원리와 현황을 조사하고, ArF 이머전 멀티패터닝 대비 장단점을 분석했습니다. 또한 High-NA EUV와 나노임프린트(NIL) 등 차세대 패터닝 기술과의 비교를 통해 향후 기술 발전 방향을 정리했습니다.</p>
+      </section>
+
+      <section class="proj-section">
+        <h2>배경 및 목적</h2>
+        <ul class="proj-list">
+          <li>ArF 이머전 방식은 멀티패터닝으로 7 nm 이하 구현 가능하나 공정 복잡도·비용이 급증</li>
+          <li>EUV는 단일 노광으로 7 nm 이하 패턴 구현이 가능하나 광원 출력·마스크 결함이 핵심 과제</li>
+          <li>목표: EUV 기술의 세부 구성 요소를 분석하고 양산 적용 한계와 개선 방향 도출</li>
+        </ul>
+      </section>
+
+      <section class="proj-section">
+        <h2>조사 항목</h2>
+        <div class="method-grid">
+          <div class="method-card">
+            <span class="method-num">01</span>
+            <h3>EUV 광원</h3>
+            <p>레이저 생성 플라즈마(LPP) 방식. 주석(Sn) 타깃에 CO₂ 레이저 조사로 13.5 nm 광 생성. 현 양산 출력: ~300 W</p>
+          </div>
+          <div class="method-card">
+            <span class="method-num">02</span>
+            <h3>반사형 마스크</h3>
+            <p>EUV는 흡수율이 높아 투과형 불가. Mo/Si 다층막 반사경 사용. 마스크 결함 검사 기술이 수율의 핵심</p>
+          </div>
+          <div class="method-card">
+            <span class="method-num">03</span>
+            <h3>EUV 레지스트</h3>
+            <p>광자 수 부족으로 샷 노이즈 문제 발생. 감도·LWR·해상도 트리오프 관계 분석</p>
+          </div>
+          <div class="method-card">
+            <span class="method-num">04</span>
+            <h3>차세대 기술 비교</h3>
+            <p>High-NA EUV(NA 0.55), NIL, DSA(Directed Self-Assembly) 비교. 해상도·처리량·비용 관점 분석</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="proj-section">
+        <h2>주요 분석 결과</h2>
+        <div class="result-grid">
+          <div class="result-card">
+            <span class="result-val">13.5 nm</span>
+            <span class="result-desc">EUV 파장 (ArF 193 nm 대비 1/14)</span>
+          </div>
+          <div class="result-card">
+            <span class="result-val">~2 nm</span>
+            <span class="result-desc">High-NA EUV 목표 해상도</span>
+          </div>
+          <div class="result-card">
+            <span class="result-val">3~5×</span>
+            <span class="result-desc">ArF 멀티패터닝 대비 공정 단순화</span>
+          </div>
+        </div>
+        <div class="project-cover placeholder-img" style="margin-top:24px; height:200px;">
+          <span>패터닝 기술 해상도 · 비용 비교 표</span>
+        </div>
+      </section>
+
+      <section class="proj-section">
+        <h2>결론 및 배운 점</h2>
+        <p>EUV는 현재 3 nm 이하 양산의 유일한 현실적 해법이지만, 광원 출력 향상과 마스크 결함 제어가 여전히 기술적 병목임을 확인했습니다. High-NA EUV는 2 nm 이하 목표로 개발 중이나 NA 증가에 따른 초점 심도(DOF) 감소 문제가 남아 있습니다. 이번 조사를 통해 노광 기술이 단순한 광학 문제가 아닌 광원·재료·계측 기술의 복합적 도전임을 이해했습니다.</p>
+      </section>
+    </div>
+  </main>
+
+  <footer>
+    <p>© 2026 전용현. Built with HTML · CSS · JS</p>
+  </footer>
+</body>
+</html>

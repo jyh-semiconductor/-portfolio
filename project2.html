@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CMOS 논리 게이트 설계 및 시뮬레이션 | 전용현</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="project.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <nav id="navbar" class="scrolled">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">YH<span class="accent">.</span></a>
+      <ul class="nav-links">
+        <li><a href="index.html#about">About</a></li>
+        <li><a href="index.html#skills">Skills</a></li>
+        <li><a href="index.html#study">Study Log</a></li>
+        <li><a href="index.html#portfolio">Portfolio</a></li>
+        <li><a href="index.html#contact">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main class="project-main">
+    <div class="back-bar">
+      <a href="index.html#portfolio" class="back-link">← Portfolio로 돌아가기</a>
+    </div>
+
+    <header class="project-header">
+      <div class="project-tags">
+        <span class="skill-tag">회로 설계</span>
+        <span class="skill-tag">LTspice</span>
+      </div>
+      <h1 class="project-title">CMOS 논리 게이트 설계 및 시뮬레이션</h1>
+      <p class="project-subtitle">NAND, NOR, XOR 게이트의 CMOS 구현과 지연 시간 · 전력 소비 분석</p>
+      <div class="project-meta">
+        <span class="meta-item"><span class="meta-label">기간</span> 2025.04 – 2025.06</span>
+        <span class="meta-item"><span class="meta-label">분야</span> CMOS 회로 설계</span>
+        <span class="meta-item"><span class="meta-label">도구</span> LTspice</span>
+      </div>
+    </header>
+
+    <div class="project-cover placeholder-img">
+      <span>회로 시뮬레이션 파형 이미지</span>
+    </div>
+
+    <div class="project-body">
+      <section class="proj-section">
+        <h2>개요</h2>
+        <p>CMOS 공정을 기반으로 NAND, NOR, XOR 논리 게이트를 트랜지스터 레벨에서 직접 설계하고, LTspice 시뮬레이션을 통해 각 게이트의 전압전달특성(VTC), 전파 지연 시간(t<sub>pd</sub>), 동적 전력 소비를 분석했습니다.</p>
+      </section>
+
+      <section class="proj-section">
+        <h2>배경 및 목적</h2>
+        <ul class="proj-list">
+          <li>CMOS 게이트는 NMOS 풀다운 네트워크와 PMOS 풀업 네트워크의 상보적 구성으로 정적 전력을 최소화</li>
+          <li>게이트 구조에 따라 트랜지스터 직렬·병렬 배치가 달라져 지연 시간과 면적 간 트레이드오프 발생</li>
+          <li>목표: 세 게이트의 성능 지표를 정량적으로 비교하고 설계 최적화 방향 도출</li>
+        </ul>
+      </section>
+
+      <section class="proj-section">
+        <h2>방법</h2>
+        <div class="method-grid">
+          <div class="method-card">
+            <span class="method-num">01</span>
+            <h3>회로 설계</h3>
+            <p>NAND, NOR, XOR 각 게이트를 PMOS/NMOS 트랜지스터로 구성. W/L 비율 초기 설정</p>
+          </div>
+          <div class="method-card">
+            <span class="method-num">02</span>
+            <h3>DC 해석</h3>
+            <p>입력 전압 스윕으로 VTC 도출. 스위칭 임계전압(V<sub>M</sub>)과 노이즈 마진 계산</p>
+          </div>
+          <div class="method-card">
+            <span class="method-num">03</span>
+            <h3>과도 해석</h3>
+            <p>펄스 입력 인가 후 t<sub>pHL</sub>, t<sub>pLH</sub> 측정. 부하 커패시턴스 변화에 따른 지연 분석</p>
+          </div>
+          <div class="method-card">
+            <span class="method-num">04</span>
+            <h3>전력 분석</h3>
+            <p>동적 전력(P = αCVDD²f) 계산. 게이트별 평균 전력 소비 비교</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="proj-section">
+        <h2>결과</h2>
+        <div class="result-grid">
+          <div class="result-card">
+            <span class="result-val">NAND</span>
+            <span class="result-desc">지연 시간 최소 (직렬 NMOS 2개)</span>
+          </div>
+          <div class="result-card">
+            <span class="result-val">32 fJ</span>
+            <span class="result-desc">NAND 게이트 스위칭당 에너지</span>
+          </div>
+          <div class="result-card">
+            <span class="result-val">2× </span>
+            <span class="result-desc">XOR 대비 NAND 지연 시간 단축 비율</span>
+          </div>
+        </div>
+        <div class="project-cover placeholder-img" style="margin-top:24px; height:200px;">
+          <span>게이트별 지연 시간 비교 그래프</span>
+        </div>
+      </section>
+
+      <section class="proj-section">
+        <h2>결론 및 배운 점</h2>
+        <p>NAND 게이트가 NOR 대비 면적과 속도 면에서 모두 유리하다는 것을 시뮬레이션으로 확인했습니다. XOR는 트랜지스터 수가 많아 지연과 전력이 증가하지만, 전송 게이트(Transmission Gate) 기반 구현으로 개선 가능성을 확인했습니다. W/L 비율 조정으로 상승·하강 지연을 균형 있게 맞추는 과정에서 소자 크기 설계의 중요성을 이해했습니다.</p>
+      </section>
+    </div>
+  </main>
+
+  <footer>
+    <p>© 2026 전용현. Built with HTML · CSS · JS</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MOSFET 공정 파라미터 최적화 | 전용현</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="project.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <!-- Navbar -->
+  <nav id="navbar" class="scrolled">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">YH<span class="accent">.</span></a>
+      <ul class="nav-links">
+        <li><a href="index.html#about">About</a></li>
+        <li><a href="index.html#skills">Skills</a></li>
+        <li><a href="index.html#study">Study Log</a></li>
+        <li><a href="index.html#portfolio">Portfolio</a></li>
+        <li><a href="index.html#contact">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main class="project-main">
+    <!-- 뒤로가기 -->
+    <div class="back-bar">
+      <a href="index.html#portfolio" class="back-link">← Portfolio로 돌아가기</a>
+    </div>
+
+    <!-- 프로젝트 헤더 -->
+    <header class="project-header">
+      <div class="project-tags">
+        <span class="skill-tag">공정 시뮬레이션</span>
+        <span class="skill-tag">MATLAB</span>
+      </div>
+      <h1 class="project-title">MOSFET 공정 파라미터 최적화</h1>
+      <p class="project-subtitle">이온주입 도즈와 어닐링 온도 변화에 따른 임계전압 변화 모델링</p>
+      <div class="project-meta">
+        <span class="meta-item"><span class="meta-label">기간</span> 2025.03 – 2025.05</span>
+        <span class="meta-item"><span class="meta-label">분야</span> 반도체 공정</span>
+        <span class="meta-item"><span class="meta-label">도구</span> MATLAB</span>
+      </div>
+    </header>
+
+    <!-- 프로젝트 이미지 -->
+    <div class="project-cover placeholder-img">
+      <span>프로젝트 대표 이미지 / 그래프</span>
+    </div>
+
+    <!-- 본문 -->
+    <div class="project-body">
+      <!-- 개요 -->
+      <section class="proj-section">
+        <h2>개요</h2>
+        <p>MOSFET 소자의 임계전압(V<sub>th</sub>)은 이온주입 공정의 도즈(dose)와 어닐링 온도에 의해 크게 영향을 받습니다. 이 프로젝트에서는 두 파라미터를 변화시키며 V<sub>th</sub>가 어떻게 달라지는지를 MATLAB으로 모델링하고, 목표 V<sub>th</sub>를 만족하는 최적 조건을 도출했습니다.</p>
+      </section>
+
+      <!-- 배경 및 목적 -->
+      <section class="proj-section">
+        <h2>배경 및 목적</h2>
+        <ul class="proj-list">
+          <li>이온주입 도즈가 높을수록 채널 도핑 농도가 증가해 V<sub>th</sub>가 상승</li>
+          <li>어닐링 온도는 도펀트 활성화율과 확산 깊이에 영향을 미침</li>
+          <li>목표: 주어진 V<sub>th</sub> 범위(0.4 V ~ 0.6 V)를 만족하는 공정 윈도우 도출</li>
+        </ul>
+      </section>
+
+      <!-- 방법 -->
+      <section class="proj-section">
+        <h2>방법</h2>
+        <div class="method-grid">
+          <div class="method-card">
+            <span class="method-num">01</span>
+            <h3>파라미터 설정</h3>
+            <p>도즈 범위: 1×10¹² ~ 5×10¹³ cm⁻²<br/>어닐링 온도: 900°C ~ 1050°C</p>
+          </div>
+          <div class="method-card">
+            <span class="method-num">02</span>
+            <h3>MATLAB 모델링</h3>
+            <p>V<sub>th</sub> 해석 모델 구현. 도핑 프로파일 계산 후 표면 포텐셜 조건으로 V<sub>th</sub> 산출</p>
+          </div>
+          <div class="method-card">
+            <span class="method-num">03</span>
+            <h3>파라미터 스윕</h3>
+            <p>2D 파라미터 스윕으로 V<sub>th</sub> 등고선 맵 생성. 목표 범위 영역 시각화</p>
+          </div>
+          <div class="method-card">
+            <span class="method-num">04</span>
+            <h3>최적 조건 도출</h3>
+            <p>공정 마진이 가장 넓은 조건 선택. 민감도 분석으로 강건성 검증</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 결과 -->
+      <section class="proj-section">
+        <h2>결과</h2>
+        <div class="result-grid">
+          <div class="result-card">
+            <span class="result-val">1.2×10¹³</span>
+            <span class="result-desc">최적 이온주입 도즈 (cm⁻²)</span>
+          </div>
+          <div class="result-card">
+            <span class="result-val">950°C</span>
+            <span class="result-desc">최적 어닐링 온도</span>
+          </div>
+          <div class="result-card">
+            <span class="result-val">0.52 V</span>
+            <span class="result-desc">목표 임계전압</span>
+          </div>
+        </div>
+        <div class="project-cover placeholder-img" style="margin-top:24px; height:200px;">
+          <span>V<sub>th</sub> 등고선 맵 이미지</span>
+        </div>
+      </section>
+
+      <!-- 결론 -->
+      <section class="proj-section">
+        <h2>결론 및 배운 점</h2>
+        <p>도즈와 어닐링 온도 두 파라미터 모두 V<sub>th</sub>에 독립적으로 영향을 미치며, 온도보다 도즈 변화에 대한 민감도가 약 3배 높음을 확인했습니다. 실제 공정에서는 도즈 제어의 정밀도가 더욱 중요함을 이해하는 계기가 되었습니다.</p>
+      </section>
+    </div>
+  </main>
+
+  <footer>
+    <p>© 2025 전용현. Built with HTML · CSS · JS</p>
+  </footer>
+</body>
+</html>

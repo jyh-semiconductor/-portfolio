@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Study Log | 전용현</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="project.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+  <!-- MathJax -->
+  <script>
+    window.MathJax = {
+      tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] },
+      options: { skipHtmlTags: ['script','noscript','style','textarea'] }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" async></script>
+</head>
+<body>
+  <nav id="navbar" class="scrolled">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">YH<span class="accent">.</span></a>
+      <ul class="nav-links">
+        <li><a href="index.html#about">About</a></li>
+        <li><a href="index.html#skills">Skills</a></li>
+        <li><a href="index.html#study">Study Log</a></li>
+        <li><a href="index.html#portfolio">Portfolio</a></li>
+        <li><a href="index.html#contact">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main class="project-main">
+    <div class="back-bar">
+      <a href="index.html#study" class="back-link">← Study Log로 돌아가기</a>
+    </div>
+
+    <div id="detail-loading" style="text-align:center; padding:80px 0; color:var(--text3);">
+      불러오는 중...
+    </div>
+
+    <div id="detail-notfound" style="display:none; text-align:center; padding:80px 0;">
+      <p style="color:var(--text3); font-size:1rem; margin-bottom:24px;">항목을 찾을 수 없습니다.</p>
+      <a href="index.html#study" class="btn btn-outline">Study Log로 돌아가기</a>
+    </div>
+
+    <div id="detail-content" style="display:none;">
+      <header class="study-header">
+        <div class="study-header-top">
+          <div id="detail-tags" class="study-tags"></div>
+          <span id="detail-date" class="study-date"></span>
+        </div>
+        <h1 class="study-title" id="detail-title"></h1>
+        <p class="study-summary" id="detail-summary"></p>
+      </header>
+
+      <div class="study-divider"></div>
+
+      <div class="study-body" id="detail-body-wrap">
+        <div id="detail-body" class="study-detail-body"></div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <p>© 2026 전용현. Built with HTML · CSS · JS</p>
+  </footer>
+
+  <script>
+    function parseContent(text) {
+      if (!text) return '';
+      const blockMath = [];
+      text = text.replace(/\$\$([\s\S]+?)\$\$/g, (_, expr) => { blockMath.push(expr); return `%%BLOCKMATH${blockMath.length-1}%%`; });
+      const inlineMath = [];
+      text = text.replace(/\$([^\$\n]+?)\$/g, (_, expr) => { inlineMath.push(expr); return `%%INLINEMATH${inlineMath.length-1}%%`; });
+      const lines = text.split('\n');
+      const blocks = []; let para = [];
+      const flushPara = () => { if (para.length) { blocks.push(`<p>${para.join('<br/>')}</p>`); para = []; } };
+      const inlineFormat = s => {
+        s = s.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+        s = s.replace(/`([^`]+)`/g, '<code class="inline-code">$1</code>');
+        s = s.replace(/\[([^\]]+)\]\((https?:\/\/[^\)]+)\)/g, '<a href="$2" target="_blank" rel="noopener" class="content-link">$1</a>');
+        return s;
+      };
+      for (const raw of lines) {
+        const line = raw.trimEnd();
+        if (line === '') { flushPara(); continue; }
+        if (/^%%BLOCKMATH\d+%%$/.test(line.trim())) { flushPara(); blocks.push(line.trim()); continue; }
+        const h3m = line.match(/^### (.+)/);
+        const h2m = line.match(/^## (.+)/);
+        const h1m = line.match(/^# (.+)/);
+        if (h3m) { flushPara(); blocks.push(`<h3 class="content-h3">${inlineFormat(h3m[1].replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'))}</h3>`); continue; }
+        if (h2m) { flushPara(); blocks.push(`<h2 class="content-h2">${inlineFormat(h2m[1].replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'))}</h2>`); continue; }
+        if (h1m) { flushPara(); blocks.push(`<h1 class="content-h1">${inlineFormat(h1m[1].replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'))}</h1>`); continue; }
+        let parsed = line.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+        parsed = inlineFormat(parsed);
+        para.push(parsed);
+      }
+      flushPara();
+      let html = blocks.join('\n');
+      html = html.replace(/%%BLOCKMATH(\d+)%%/g, (_, i) => `<div class="math-block">\\[${blockMath[i]}\\]</div>`);
+      html = html.replace(/%%INLINEMATH(\d+)%%/g, (_, i) => `\\(${inlineMath[i]}\\)`);
+      return html;
+    }
+  </script>
+  <script>
+    function loadData(key) {
+      try { return JSON.parse(localStorage.getItem(key)) || []; }
+      catch { return []; }
+    }
+
+    function escHtml(str) {
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    const CATEGORY_TREE = {
+      semiconductor: { label: '집적회로', subs: { process: '공정', device: '소자', circuit: '회로', physics: '물리' }},
+      data:          { label: '데이터 분석', subs: { projects: 'Python 실전 프로젝트', theory: '분석 이론 및 알고리즘' }},
+      quality:       { label: '품질 및 통계', subs: { 'six-sigma': '6시그마', spc: 'SPC' }},
+      career:        { label: '커리어', subs: { language: '어학', certifications: '자격증', retrospect: '회고' }}
+    };
+
+    function getMajorBySub(sub) {
+      for (const [major, data] of Object.entries(CATEGORY_TREE)) {
+        if (data.subs[sub]) return major;
+      }
+      return null;
+    }
+
+    function getCategoryLabel(major, sub) {
+      const m = CATEGORY_TREE[major]?.label || major || '';
+      const s = CATEGORY_TREE[major]?.subs[sub] || sub || '';
+      return m && s ? `${m} > ${s}` : (s || m);
+    }
+
+    const params = new URLSearchParams(location.search);
+    const id     = params.get('id');
+
+    const loading  = document.getElementById('detail-loading');
+    const notfound = document.getElementById('detail-notfound');
+    const content  = document.getElementById('detail-content');
+
+    if (!id) {
+      loading.style.display  = 'none';
+      notfound.style.display = 'block';
+    } else {
+      const items = loadData('portfolio_study');
+      const item  = items.find(s => s.id === id);
+
+      loading.style.display = 'none';
+
+      if (!item) {
+        notfound.style.display = 'block';
+      } else {
+        document.title = item.title + ' | 전용현';
+
+        // 카테고리 태그
+        const major = item.major || getMajorBySub(item.category) || 'semiconductor';
+        const sub   = item.category || '';
+        document.getElementById('detail-tags').innerHTML =
+          `<span class="card-tag cat-${major}">${escHtml(getCategoryLabel(major, sub))}</span>`;
+
+        // 제목
+        document.getElementById('detail-title').textContent = item.title;
+
+        // 날짜
+        if (item.date) {
+          document.getElementById('detail-date').textContent = item.date;
+        }
+
+        // 요약 (desc) — 헤더 아래 리드 문장
+        const summaryEl = document.getElementById('detail-summary');
+        if (item.desc) {
+          summaryEl.textContent = item.desc;
+        } else {
+          summaryEl.style.display = 'none';
+        }
+
+        // 상세 내용 — 마크다운 파싱 적용
+        const bodyWrap = document.getElementById('detail-body-wrap');
+        if (item.content) {
+          document.getElementById('detail-body').innerHTML = parseContent(item.content);
+          if (window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise();
+          else window.addEventListener('load', () => { if (window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise(); });
+        } else {
+          bodyWrap.style.display = 'none';
+        }
+
+        content.style.display = 'block';
+      }
+    }
+  </script>
+</body>
+</html>
