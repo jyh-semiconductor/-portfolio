@@ -73,6 +73,7 @@
     <p>© 2026 전용현. Built with HTML · CSS · JS</p>
   </footer>
 
+  <script src="data.js"></script>
   <script>
     function parseContent(text) {
       if (!text) return '';
@@ -112,6 +113,9 @@
   </script>
   <script>
     function loadData(key) {
+      if (typeof STATIC_DATA !== 'undefined' && STATIC_DATA[key] && STATIC_DATA[key].length > 0) {
+        return STATIC_DATA[key];
+      }
       try { return JSON.parse(localStorage.getItem(key)) || []; }
       catch { return []; }
     }
